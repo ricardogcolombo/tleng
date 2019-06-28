@@ -10,7 +10,8 @@ tokens = (
     'RBRACKET',
     'ARRAY',
     'TYPE',
-    'ATTRIBUTE'
+    'STRUCT',
+    'ATT_TYPE_NAME'
 )
 
 # Expresiones regulares para tokens simples
@@ -21,8 +22,9 @@ t_BOOL = r'bool'
 t_LBRACKET = r'\{'
 t_RBRACKET = r'\}'
 t_ARRAY = r'\[\]'
-t_TYPE = r'type \s [a-z]+ \s struct'
-t_ATTRIBUTE = r'[a-z]+'
+t_TYPE = r'type'
+t_STRUCT = r'struct'
+t_ATT_TYPE_NAME = r'(?!string|int|float64|bool|type|struct)[a-z]+'
 
 # Define a rule so we can track line numbers
 def t_newline(t):
@@ -30,7 +32,7 @@ def t_newline(t):
     t.lexer.lineno += len(t.value)
 
 # Caracteres ignorados (spaces and tabs)
-t_ignore  = '\t'
+t_ignore  = ' \t'
 
 # Error handling de caracteres invalidos
 def t_error(t):
