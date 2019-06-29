@@ -4,11 +4,11 @@ import random
 from lexer import tokens
 
 def p_struct_recursive(p):
-    'struct : TYPE type_name STRUCT struct_definition struct '
+    'struct_block : type type_name struct struct_definition struct_block '
     p[0] = '{\n' + p[4] + '\n}' + p[5]
 
 def p_struct_final(p):
-    'struct : TYPE type_name STRUCT struct_definition '
+    'struct_block : type type_name struct struct_definition '
     p[0] = '{\n' + p[4] + '\n}'
 
 def p_attributes(p):
@@ -16,7 +16,7 @@ def p_attributes(p):
     p[0] = p[2]
 
 def p_type_name(p):
-    'type_name : ATT_TYPE_NAME'
+    'type_name : STRING'
     p[0] = p[1] + '\n'
 
 def p_attributes_definition_recursive(p):
@@ -28,24 +28,16 @@ def p_attributes_definition_final(p):
     p[0] = '\"' + p[1] + '\": ' + p[2]
 
 def p_attribute(p):
-    'attribute : ATT_TYPE_NAME'
+    'attribute : STRING'
     p[0] = p[1]
 
 def p_type_string(p):
     'type : STRING'
     p[0] = p[1]
 
-def p_type_int(p):
-    'type : INT'
-    p[0] = str(random.randint(0,100))
-
-def p_type_float(p):
-    'type : FLOAT64'
-    p[0] = str(random.uniform(0, 100))
-
-def p_type_bool(p):
-    'type : BOOL'
-    p[0] = str(bool(random.getrandbits(1)))
+def p_struct_string(p):
+    'struct : STRING'
+    p[0] = p[1]
 
 # Error rule for syntax errors
 def p_error(p):

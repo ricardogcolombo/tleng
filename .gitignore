@@ -12,6 +12,7 @@ example/
 lexer_rules.py
 parser_rules.py
 parsetab.py
+ply-3.10
 
 # Distribution / packaging
 .Python

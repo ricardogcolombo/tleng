@@ -2,29 +2,17 @@ import ply.lex as lex
 
 # Lista de tokens
 tokens = (
-    'STRING',
-    'INT',
-    'FLOAT64',
-    'BOOL',
     'LBRACKET',
     'RBRACKET',
     'ARRAY',
-    'TYPE',
-    'STRUCT',
-    'ATT_TYPE_NAME'
+    'STRING'
 )
 
 # Expresiones regulares para tokens simples
-t_STRING = r'string'
-t_INT = r'int'
-t_FLOAT64 = r'float64'
-t_BOOL = r'bool'
 t_LBRACKET = r'\{'
 t_RBRACKET = r'\}'
 t_ARRAY = r'\[\]'
-t_TYPE = r'type'
-t_STRUCT = r'struct'
-t_ATT_TYPE_NAME = r'(?!string|int|float64|bool|type|struct)[a-z]+'
+t_STRING = r'[a-z]+'
 
 # Define a rule so we can track line numbers
 def t_newline(t):
