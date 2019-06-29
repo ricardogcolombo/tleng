@@ -4,11 +4,11 @@ from lexer import tokens
 
 def p_struct_recursive(p):
     'struct : TYPE type_name STRUCT struct_definition struct '
-    p[0] = p[2] + ' ' + p[4] + p[5]
+    p[0] = '{' + p[4] + '}' + p[5]
 
 def p_struct_final(p):
     'struct : TYPE type_name STRUCT struct_definition '
-    p[0] = p[2] + ' ' + p[4]
+    p[0] = '{' + p[4] + '}'
 
 def p_attributes(p):
     'struct_definition : LBRACKET attributes_definition RBRACKET'
@@ -20,11 +20,11 @@ def p_type_name(p):
 
 def p_attributes_definition_recursive(p):
     'attributes_definition : attribute type attributes_definition'
-    p[0] = p[1] + ' ' + p[2] + p[3]
+    p[0] = '\"' + p[1] + '\": ' + p[2] + p[3]
 
 def p_attributes_definition_final(p):
     'attributes_definition : attribute type'
-    p[0] = p[1] + ' ' + p[2]
+    p[0] = '\"' + p[1] + '\": ' + p[2]
 
 def p_attribute(p):
     'attribute : ATT_TYPE_NAME'

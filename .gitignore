@@ -8,6 +8,7 @@ __pycache__/
 *.out
 
 VENV/
+example/
 lexer_rules.py
 parser_rules.py
 parsetab.py
