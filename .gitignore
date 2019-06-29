@@ -8,6 +8,9 @@ __pycache__/
 *.out
 
 VENV/
+lexer_rules.py
+parser_rules.py
+parsetab.py
 
 # Distribution / packaging
 .Python
