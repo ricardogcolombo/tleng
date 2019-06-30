@@ -1,6 +1,7 @@
 import ply.yacc as yacc
 import ply.lex as lex
 import random
+from constructor import define_type, create_array
 from lexer import tokens
 
 def p_struct_recursive(p):
@@ -17,27 +18,45 @@ def p_attributes(p):
 
 def p_type_name(p):
     'type_name : STRING'
-    p[0] = p[1] + '\n'
+    p[0] = define_type(p[1])
 
 def p_attributes_definition_recursive(p):
-    'attributes_definition : attribute type attributes_definition'
+    'attributes_definition : attribute type_name attributes_definition'
     p[0] = '\"' + p[1] + '\": ' + p[2] + '\n' + p[3]
 
 def p_attributes_definition_final(p):
-    'attributes_definition : attribute type'
+    'attributes_definition : attribute type_name'
     p[0] = '\"' + p[1] + '\": ' + p[2]
+
+def p_attributes_definition_list_recursive(p):
+    'attributes_definition : attribute array type_name attributes_definition'
+    p[0] = '\"' + p[1] + '\": ' + create_array(p[3]) + p[4]
+
+def p_attributes_definition_list_final(p):
+    'attributes_definition : attribute array type_name'
+    p[0] = '\"' + p[1] + '\": ' + create_array(p[3])
 
 def p_attribute(p):
     'attribute : STRING'
     p[0] = p[1]
 
+def p_array(p):
+    'array : ARRAY'
+    p[0] = p[1]
+
 def p_type_string(p):
     'type : STRING'
-    p[0] = p[1]
+    if(p[1] == "type"):
+        p[0] = p[1]
+    else:
+        raise Exception("Te equivocaste perri, me mandaste " + p[1])
 
 def p_struct_string(p):
     'struct : STRING'
-    p[0] = p[1]
+    if(p[1] == "struct"):
+        p[0] = p[1]
+    else:
+        raise Exception("Te equivocaste perri, me mandaste " + p[1])
 
 # Error rule for syntax errors
 def p_error(p):
