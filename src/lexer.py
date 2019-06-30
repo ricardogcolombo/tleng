@@ -12,7 +12,7 @@ tokens = (
 t_LBRACKET = r'\{'
 t_RBRACKET = r'\}'
 t_ARRAY = r'\[\]'
-t_STRING = r'[a-z]+'
+t_STRING = r'[a-z0-9]+'
 
 # Define a rule so we can track line numbers
 def t_newline(t):
