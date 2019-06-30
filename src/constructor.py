@@ -7,7 +7,7 @@ def define_type(val):
         return "limpiame sucio"
 
 def create_array(val):
-    asa = ''
-    for num in range(0,random.randint(1,5)):
-        asa = asa + define_type(val) + ", "
-    return asa
+    res = '[ \n'
+    for num in range(0,random.randint(0,4)):
+        res = res + define_type(val) + ", \n"
+    return res + define_type(val) + '\n]'

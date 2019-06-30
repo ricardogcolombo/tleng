@@ -20,6 +20,14 @@ def p_type_name(p):
     'type_name : STRING'
     p[0] = define_type(p[1])
 
+def p_array_type_name(p):
+    'array_type_name : STRING'
+    p[0] = create_array(p[1])
+
+def p_array_struct(p):
+    'array_struct : array array_type_name'
+    p[0] = p[2]
+
 def p_attributes_definition_recursive(p):
     'attributes_definition : attribute type_name attributes_definition'
     p[0] = '\"' + p[1] + '\": ' + p[2] + '\n' + p[3]
@@ -29,12 +37,12 @@ def p_attributes_definition_final(p):
     p[0] = '\"' + p[1] + '\": ' + p[2]
 
 def p_attributes_definition_list_recursive(p):
-    'attributes_definition : attribute array type_name attributes_definition'
-    p[0] = '\"' + p[1] + '\": ' + create_array(p[3]) + p[4]
+    'attributes_definition : attribute array_struct attributes_definition'
+    p[0] = '\"' + p[1] + '\": ' + p[2] + '\n' + p[3]
 
 def p_attributes_definition_list_final(p):
-    'attributes_definition : attribute array type_name'
-    p[0] = '\"' + p[1] + '\": ' + create_array(p[3])
+    'attributes_definition : attribute array_struct'
+    p[0] = '\"' + p[1] + '\": ' + p[2]
 
 def p_attribute(p):
     'attribute : STRING'
