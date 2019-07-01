@@ -86,6 +86,20 @@ def p_array_bool_value(p):
         res = res + str(bool(random.getrandbits(1))) + ", \n"
     p[0] = res + '\n]'
 
+### NEW TYPE
+def p_new_type_value(p):
+    'attribute_value : attribute type_name'
+    register_struct(p[2])
+    p[0] = '\"' + p[1] + '\": ' + p[2]
+
+def p_array_bool_value(p):
+    'attribute_value : attribute ARRAY type_name'
+    register_struct(p[3])
+    res =  '\"' + p[1] + '\": ' + '[ \n'
+    for num in range(0,random.randint(0,4)):
+        res = res + p[3] + ", \n"
+    p[0] = res + '\n]'
+
 # Error rule for syntax errors
 def p_error(p):
     print("Syntax error in input!")
