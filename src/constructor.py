@@ -1,20 +1,10 @@
 import random
 import string
 
-STRUCT_MAP = {}
+DEPENDENCIES_LIST = []
 
 def define_type(val):
-    if(val == "int"):
-        return str(random.randint(0,100))
-    elif(val == "string"):
-        return create_random_string()
-    elif(val == "float64"):
-        return str(random.uniform(0,100))
-    elif(val == "bool"):
-        return str(bool(random.getrandbits(1)))
-    else:
-        print(STRUCT_MAP)
-        return STRUCT_MAP[val]
+    return val
 
 def create_array(val):
     res = '[ \n'

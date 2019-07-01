@@ -1,18 +1,33 @@
 import ply.lex as lex
 
+# Palabras reservadas
+reserved = {
+    'type' : 'TYPE',
+    'struct' : 'STRUCT',
+    'string' : 'STRING',
+    'float64' : 'FLOAT64',
+    'bool' : 'BOOL',
+    'int' : 'INT'
+}
+
 # Lista de tokens
-tokens = (
+tokens = [
     'LBRACKET',
     'RBRACKET',
     'ARRAY',
-    'STRING'
-)
+    'WORD'
+] + list(reserved.values())
 
 # Expresiones regulares para tokens simples
 t_LBRACKET = r'\{'
 t_RBRACKET = r'\}'
 t_ARRAY = r'\[\]'
-t_STRING = r'[a-z0-9]+'
+
+def t_WORD(t):
+    r'[a-z0-9]+'
+    if t.value in reserved.keys():
+        t.type = reserved[t.value]
+    return t
 
 # Define a rule so we can track line numbers
 def t_newline(t):
