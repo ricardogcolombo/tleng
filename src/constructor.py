@@ -3,18 +3,36 @@ import string
 
 DEPENDENCIES_LIST = []
 
-def define_type(val):
-    return val
+class Type(object):
 
-def create_array(val):
-    res = '[ \n'
-    for num in range(0,random.randint(0,4)):
-        res = res + define_type(val) + ", \n"
-    return res + define_type(val) + '\n]'
+    def __init__(self, attribute):
+        self.attribute = attribute
 
-def create_random_string():
-    val = ''.join(random.sample(string.ascii_lowercase,random.randint(1,30)))
-    return "\"" + val + "\""
+    def value(self):
+        raise NotImplementedError
 
-def register_struct(struct, type_name):
-    STRUCT_MAP[type_name] = struct
+    def evaluate_single(self):
+        return "\"" + self.attribute + "\":" + self.value()
+
+    def evaluate_array(self):
+        res =  '\"' + self.attribute + '\": ' + '[ \n'
+        for num in range(0,random.randint(0,4)):
+            res = res + self.value() + ", \n"
+        p[0] = res + '\n]'
+
+class RandomBool(Type):
+    def value(self):
+        return str(bool(random.getrandbits(1)))
+
+class RandomInt(Type):
+    def value(self):
+        return str(random.randint(0,100))
+
+class RandomFloat(Type):
+    def value(self):
+        return str(random.uniform(0,100))
+
+class RandomString(Type):
+    def value(self):
+        val = ''.join(random.sample(string.ascii_lowercase,random.randint(1,30)))
+        return "\"" + val + "\""
