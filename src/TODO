@@ -1,6 +1,5 @@
-- Meter los tipos basicos en la validacion de struct
-- Agregar las structs inline
 - raise ValueError("Sample larger than population")
 - Ordenar {}, "", tabs, etc
 - Dividir en clases el constructor
 - No permitir circulares
+- Hacer por stdin

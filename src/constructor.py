@@ -87,3 +87,12 @@ class RandomStruct(Type):
                 value = struct.attributes.evaluate(structs_defined) + "\n}"
                 return "{" + "\t".join(value.splitlines(True))
         raise Exception(self.type_name + " was never defined")
+
+class RandomStructInline(Type):
+    def __init__(self, name, attributes, is_array=False):
+        self.name = name
+        self.attributes = attributes
+        self.is_array = is_array
+
+    def value(self, structs_defined):
+        return "{" + "\t".join(self.attributes.evaluate(structs_defined).splitlines(True)) + "\n \t}"

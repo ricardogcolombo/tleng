@@ -1,7 +1,7 @@
 import ply.yacc as yacc
 import ply.lex as lex
 import random
-from constructor import RandomBool, RandomInt, RandomFloat, RandomString, RandomStruct, Attributes, Structs
+from constructor import RandomBool, RandomInt, RandomFloat, RandomString, RandomStruct, Attributes, Structs, RandomStructInline
 from lexer import tokens
 
 ### Struct definition
@@ -41,6 +41,14 @@ def p_attributes_definition_final(p):
 def p_attribute(p):
     'attribute : WORD'
     p[0] = p[1]
+
+def p_attribute_struct_value(p):
+    'attribute_value : attribute STRUCT struct_definition '
+    p[0] = RandomStructInline(p[1], p[3])
+
+def p_attribute_struct_array_value(p):
+    'attribute_value : attribute ARRAY STRUCT struct_definition '
+    p[0] = RandomStructInline(p[1], p[3], is_array=True)
 
 ### STRING
 def p_string_value(p):
