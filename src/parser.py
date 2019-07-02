@@ -30,7 +30,7 @@ def p_type_name(p):
 
 def p_attributes_definition_recursive(p):
     'attributes_definition : attribute_value attributes_definition'
-    p[0] = Attributes(p[1], p[2])
+    p[0] = Attributes(p[1], p[2].attributes)
 
 def p_attributes_definition_final(p):
     'attributes_definition : attribute_value'

@@ -12,7 +12,7 @@ class Structs(object):
     def evaluate(self):
         res = ''
         for struct in self.structs:
-            res = res + struct.attributes.evaluate()
+            res = "{ \n \t" + res + struct.attributes.evaluate() + " \n}"
         return res
 
 
@@ -23,7 +23,7 @@ class Attributes(object):
     def evaluate(self):
         res = ''
         for attribute in self.attributes:
-            res = res + attribute.evaluate()
+            res = res + "\n \t" + attribute.evaluate()
         return res
 
 ##TYPES
