@@ -1,13 +1,13 @@
 import random
 import string
 
-DEPENDENCIES_LIST = []
-
 class Structs(object):
+
     def __init__(self, name, attributes, structs):
         self.name = name
         self.attributes = attributes
-        self.structs = [self] + structs
+        if(self.is_valid_struct(structs)):
+            self.structs = [self] + structs
 
     def evaluate(self):
         res = ''
@@ -15,6 +15,11 @@ class Structs(object):
             res = "{ \n \t" + res + struct.attributes.evaluate() + " \n}"
         return res
 
+    def is_valid_struct(self, structs):
+        for struct in structs:
+            if(struct.name == self.name):
+                raise Exception(self.name + " was already defined")
+        return True
 
 class Attributes(object):
     def __init__(self, value, attributes):

@@ -12,7 +12,7 @@ def p_final_struct(p):
 
 def p_struct_recursive(p):
     'struct_block : TYPE type_name STRUCT struct_definition struct_block '
-    p[0] = Structs(p[2], p[4], p[5])
+    p[0] = Structs(p[2], p[4], p[5].structs)
 
 def p_struct_final(p):
     'struct_block : TYPE type_name STRUCT struct_definition '

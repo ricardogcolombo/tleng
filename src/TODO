@@ -3,3 +3,4 @@
 - raise ValueError("Sample larger than population")
 - Ordenar {}, "", etc
 - Dividir en clases el constructor
+- Meter los tipos basicos en la validacion de struct
