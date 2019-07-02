@@ -20,12 +20,15 @@ class Type(object):
         return "\"" + self.name + "\":" + self.value(structs_defined)
 
     def evaluate_array(self, structs_defined):
-        res =  '\"' + self.name + '\": ' + '[ \n'
+        res =  ''
         for num in range(0,random.randint(0,5)):
             if(num > 0):
                 res = res + ", \n"
-            res = res + "\t \t" + self.value(structs_defined)
-        return res + '\n \t]'
+            res = res + self.value(structs_defined)
+        return '\"' + self.name + '\": ' + '[ \n' + self.add_tabs(res) + '\n \t]'
+
+    def add_tabs(self, val):
+        return "\t" + "\t".join(val.splitlines(True))
 
 class DefinedType(Type):
     def __init__(self, name, is_array=False):

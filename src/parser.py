@@ -1,6 +1,7 @@
 import ply.yacc as yacc
 import ply.lex as lex
 import random
+import sys
 from attributes import Attributes, EmptyAttributes
 from structs import Structs
 from typesdefinition import RandomBool, RandomInt, RandomFloat, RandomString, RandomStruct, RandomStructInline
@@ -105,14 +106,20 @@ def p_array_new_struct_value(p):
 def p_error(p):
     print("Syntax error in input!")
 
-# Build the parser
-parser = yacc.yacc()
+if __name__ == "__main__":
+    if(len(sys.argv) > 2):
+        parseFile()
+    else:
+        if(len(sys.argv) == 2):
+            parser = yacc.yacc()
+            print(parser.parse(sys.argv[1]))
+        else:
+             print("Argument expected")
 
-while True:
-    try:
-        s = input('calc > ')
-    except EOFError:
-        break
-    if not s: continue
-    result = parser.parse(s)
-    print(result)
+def parseFile():
+    if(sys.argv[1] == "--f"):
+        with open (sys.argv[2], "r") as myfile:
+            parser = yacc.yacc()
+            print(parser.parse(myfile.readlines()))
+    else:
+        print("Too many arguments")

@@ -10,7 +10,7 @@ class Attributes(object):
                 first_run = False
             else:
                 res = res + ","
-            res = res + "\n \t" + attribute.evaluate(structs_defined)
+            res = res + "\n" + attribute.evaluate(structs_defined)
         return res
 
     def validate_all_attributes_are_defined(self, structs_defined):
