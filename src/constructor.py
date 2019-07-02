@@ -5,17 +5,23 @@ class Structs(object):
     def __init__(self, name, attributes, structs):
         self.name = name
         self.attributes = attributes
-        if(self.is_valid_struct(structs)):
+        if(self.is_not_duplicated(structs)):
             self.structs = [self] + structs
 
     def evaluate(self):
+        self.validate_all_structs_are_defined()
+        #validate_not_circular_definition()
         return "{" + self.attributes.evaluate(self.structs) + " \n}"
 
-    def is_valid_struct(self, structs):
+    def is_not_duplicated(self, structs):
         for struct in structs:
             if(struct.name == self.name):
                 raise Exception(self.name + " was already defined")
         return True
+
+    def validate_all_structs_are_defined(self):
+        for struct in self.structs:
+            struct.attributes.validate_all_attributes_are_defined(self.structs)
 
 class Attributes(object):
     def __init__(self, value, attributes):
@@ -31,6 +37,14 @@ class Attributes(object):
                 res = res + ","
             res = res + "\n \t" + attribute.evaluate(structs_defined)
         return res
+
+    def validate_all_attributes_are_defined(self, structs_defined):
+        for attribute in self.attributes:
+            attribute.type_is_defined(structs_defined)
+
+class EmptyAttributes(object):
+    def evaluate(self, structs_defined):
+        return ''
 
 ##TYPES
 class Type(object):
@@ -63,6 +77,9 @@ class DefinedType(Type):
         self.name = name
         self.is_array = is_array
 
+    def type_is_defined(self, structs):
+        return True
+
 class RandomBool(DefinedType):
     def value(self, structs_defined):
         return str(bool(random.getrandbits(1)))
@@ -86,6 +103,11 @@ class RandomStruct(Type):
             if(self.type_name == struct.name):
                 value = struct.attributes.evaluate(structs_defined) + "\n}"
                 return "{" + "\t".join(value.splitlines(True))
+
+    def type_is_defined(self, structs_defined):
+        for struct in structs_defined:
+            if(self.type_name == struct.name):
+                return True
         raise Exception(self.type_name + " was never defined")
 
 class RandomStructInline(Type):
@@ -93,6 +115,12 @@ class RandomStructInline(Type):
         self.name = name
         self.attributes = attributes
         self.is_array = is_array
+
+    def type_is_defined(self, structs):
+        for attribute in self.attributes:
+            if(not attribute.type_is_defined()):
+                return False
+        return True
 
     def value(self, structs_defined):
         return "{" + "\t".join(self.attributes.evaluate(structs_defined).splitlines(True)) + "\n \t}"

@@ -1,7 +1,7 @@
 import ply.yacc as yacc
 import ply.lex as lex
 import random
-from constructor import RandomBool, RandomInt, RandomFloat, RandomString, RandomStruct, Attributes, Structs, RandomStructInline
+from constructor import RandomBool, RandomInt, RandomFloat, RandomString, RandomStruct, Attributes, Structs, RandomStructInline, EmptyAttributes
 from lexer import tokens
 
 ### Struct definition
@@ -21,6 +21,10 @@ def p_struct_final(p):
 def p_attributes(p):
     'struct_definition : LBRACKET attributes_definition RBRACKET'
     p[0] = p[2]
+
+def p_attributes_empty(p):
+    'struct_definition : LBRACKET RBRACKET'
+    p[0] = EmptyAttributes()
 
 def p_type_name(p):
     'type_name : WORD'
