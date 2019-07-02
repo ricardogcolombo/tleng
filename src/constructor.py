@@ -77,7 +77,7 @@ class RandomFloat(DefinedType):
 
 class RandomString(DefinedType):
     def value(self, structs_defined):
-        val = ''.join(random.sample(string.ascii_lowercase,random.randint(1,30)))
+        val = ''.join(random.choice(string.ascii_lowercase) for i in range(random.randint(1,30)))
         return "\"" + val + "\""
 
 class RandomStruct(Type):
