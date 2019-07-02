@@ -1,7 +1,7 @@
 import ply.yacc as yacc
 import ply.lex as lex
 import random
-from constructor import RandomBool, RandomInt, RandomFloat, RandomString, Attributes, Structs
+from constructor import RandomBool, RandomInt, RandomFloat, RandomString, RandomStruct, Attributes, Structs
 from lexer import tokens
 
 ### Struct definition
@@ -77,6 +77,15 @@ def p_bool_value(p):
 def p_array_bool_value(p):
     'attribute_value : attribute ARRAY BOOL'
     p[0] = RandomBool(p[1], is_array=True)
+
+### NEW STRUCT
+def p_new_struct_value(p):
+    'attribute_value : attribute type_name'
+    p[0] = RandomStruct(p[1], p[2])
+
+def p_array_new_struct_value(p):
+    'attribute_value : attribute ARRAY type_name'
+    p[0] = RandomStruct(p[1], p[3], is_array=True)
 
 # Error rule for syntax errors
 def p_error(p):
