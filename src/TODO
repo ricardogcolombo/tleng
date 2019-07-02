@@ -1,4 +1,3 @@
-- Chequear que todas las declaraciones sean validas
 - Ordenar {}, "", tabs, etc
 - Dividir en clases el constructor
 - No permitir circulares

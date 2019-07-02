@@ -46,6 +46,9 @@ class EmptyAttributes(object):
     def evaluate(self, structs_defined):
         return ''
 
+    def validate_all_attributes_are_defined(self, structs_defined):
+        return True
+
 ##TYPES
 class Type(object):
     def __init__(self, name, type_name, is_array=False):
