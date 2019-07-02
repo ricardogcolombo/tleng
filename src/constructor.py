@@ -2,7 +2,6 @@ import random
 import string
 
 class Structs(object):
-
     def __init__(self, name, attributes, structs):
         self.name = name
         self.attributes = attributes
@@ -10,7 +9,7 @@ class Structs(object):
             self.structs = [self] + structs
 
     def evaluate(self):
-        return "{ \n \t" + self.attributes.evaluate(self.structs) + " \n}"
+        return "{" + self.attributes.evaluate(self.structs) + " \n}"
 
     def is_valid_struct(self, structs):
         for struct in structs:
@@ -24,7 +23,12 @@ class Attributes(object):
 
     def evaluate(self, structs_defined):
         res = ''
+        first_run = True
         for attribute in self.attributes:
+            if(first_run):
+                first_run = False
+            else:
+                res = res + ","
             res = res + "\n \t" + attribute.evaluate(structs_defined)
         return res
 
@@ -48,9 +52,11 @@ class Type(object):
 
     def evaluate_array(self, structs_defined):
         res =  '\"' + self.name + '\": ' + '[ \n'
-        for num in range(0,random.randint(0,4)):
-            res = res + self.value(structs_defined) + ", \n"
-        return res + '\n]'
+        for num in range(0,random.randint(0,5)):
+            if(num > 0):
+                res = res + ", \n"
+            res = res + "\t \t" + self.value(structs_defined)
+        return res + '\n \t]'
 
 class DefinedType(Type):
     def __init__(self, name, is_array=False):
@@ -78,5 +84,6 @@ class RandomStruct(Type):
     def value(self, structs_defined):
         for struct in structs_defined:
             if(self.type_name == struct.name):
-                return struct.attributes.evaluate(structs_defined)
+                value = struct.attributes.evaluate(structs_defined) + "\n}"
+                return "{" + "\t".join(value.splitlines(True))
         raise Exception(self.type_name + " was never defined")
