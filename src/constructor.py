@@ -10,7 +10,7 @@ class Structs(object):
 
     def evaluate(self):
         self.validate_all_structs_are_defined()
-        #validate_not_circular_definition()
+        self.validate_not_circular_definition()
         return "{" + self.attributes.evaluate(self.structs) + " \n}"
 
     def is_not_duplicated(self, structs):
@@ -22,6 +22,10 @@ class Structs(object):
     def validate_all_structs_are_defined(self):
         for struct in self.structs:
             struct.attributes.validate_all_attributes_are_defined(self.structs)
+
+    def validate_not_circular_definition(self):
+        for struct in self.structs:
+            struct.attributes.validate_not_circular_definition([struct.name], self.structs)
 
 class Attributes(object):
     def __init__(self, value, attributes):
@@ -42,11 +46,18 @@ class Attributes(object):
         for attribute in self.attributes:
             attribute.type_is_defined(structs_defined)
 
+    def validate_not_circular_definition(self, dependencies, structs_defined):
+        for attribute in self.attributes:
+            attribute.validate_not_circular_definition(dependencies, structs_defined)
+
 class EmptyAttributes(object):
     def evaluate(self, structs_defined):
         return ''
 
     def validate_all_attributes_are_defined(self, structs_defined):
+        return True
+
+    def validate_not_circular_definition(self, dependencies, structs_defined):
         return True
 
 ##TYPES
@@ -83,6 +94,9 @@ class DefinedType(Type):
     def type_is_defined(self, structs):
         return True
 
+    def validate_not_circular_definition(self, dependencies, structs_defined):
+        return True
+
 class RandomBool(DefinedType):
     def value(self, structs_defined):
         return str(bool(random.getrandbits(1)))
@@ -112,6 +126,14 @@ class RandomStruct(Type):
             if(self.type_name == struct.name):
                 return True
         raise Exception(self.type_name + " was never defined")
+
+    def validate_not_circular_definition(self, dependencies, structs_defined):
+        if(self.type_name in dependencies):
+            raise Exception(self.type_name + " has a circular dependency")
+        else:
+            for struct in structs_defined:
+                if(self.type_name == struct.name):
+                    return struct.attributes.validate_not_circular_definition([self.type_name] + dependencies, structs_defined)
 
 class RandomStructInline(Type):
     def __init__(self, name, attributes, is_array=False):
