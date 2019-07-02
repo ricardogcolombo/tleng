@@ -1,7 +1,9 @@
 import ply.yacc as yacc
 import ply.lex as lex
 import random
-from constructor import RandomBool, RandomInt, RandomFloat, RandomString, RandomStruct, Attributes, Structs, RandomStructInline, EmptyAttributes
+from attributes import Attributes, EmptyAttributes
+from structs import Structs
+from typesdefinition import RandomBool, RandomInt, RandomFloat, RandomString, RandomStruct, RandomStructInline
 from lexer import tokens
 
 ### Struct definition
