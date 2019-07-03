@@ -62,8 +62,8 @@ class RandomStruct(Type):
     def value(self, structs_defined):
         for struct in structs_defined:
             if(self.type_name == struct.name):
-                value = struct.attributes.evaluate(structs_defined) + "\n}"
-                return "{" + "\t".join(value.splitlines(True))
+                value = struct.attributes.evaluate(structs_defined)
+                return "{" + "\t".join(value.splitlines(True)) + "\n}"
 
     def type_is_defined(self, structs_defined):
         for struct in structs_defined:
