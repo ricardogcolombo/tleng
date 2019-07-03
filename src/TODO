@@ -1,3 +1,3 @@
-- Sacar mayusculas y numeros del inicio, agregar cositos especiales wawa gedesssss
-- Hacer que rompa todo cuando syntax illegal?
-- Hacer que rompa todo cuando illegal character?
+- Tests
+- Hacer que todo corra con un comando (run, runWithFile)
+- Pasar todo a format

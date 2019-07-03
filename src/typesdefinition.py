@@ -25,7 +25,7 @@ class Type(object):
             if(num > 0):
                 res = res + ", \n"
             res = res + self.value(structs_defined)
-        return '\"' + self.name + '\": ' + '[ \n' + self.add_tabs(res) + '\n \t]'
+        return '\"' + self.name + '\": ' + '[ \n' + self.add_tabs(res) + '\n]'
 
     def add_tabs(self, val):
         return "\t" + "\t".join(val.splitlines(True))
@@ -86,10 +86,10 @@ class RandomStructInline(Type):
         self.is_array = is_array
 
     def type_is_defined(self, structs):
-        for attribute in self.attributes:
-            if(not attribute.type_is_defined()):
-                return False
-        return True
+        return self.attributes.validate_all_attributes_are_defined(structs)
+
+    def validate_not_circular_definition(self, dependencies, struct_defined):
+        return self.attributes.validate_not_circular_definition(dependencies, struct_defined)
 
     def value(self, structs_defined):
-        return "{" + "\t".join(self.attributes.evaluate(structs_defined).splitlines(True)) + "\n \t}"
+        return "{" + "\t".join(self.attributes.evaluate(structs_defined).splitlines(True)) + "\n}"

@@ -24,7 +24,7 @@ t_RBRACKET = r'\}'
 t_ARRAY = r'\[\]'
 
 def t_WORD(t):
-    r'[a-zA-Z0-9]+'
+    r'[a-z][a-zA-Z0-9]*'
     if t.value in reserved.keys():
         t.type = reserved[t.value]
     return t
@@ -39,8 +39,7 @@ t_ignore  = ' \t'
 
 # Error handling de caracteres invalidos
 def t_error(t):
-    print("Illegal character '%s'" % t.value[0])
-    t.lexer.skip(1)
+    raise Exception("Illegal character %s when \"%s\" was going to be parsed" % (t.value[0], t.value))
 
 # Build the lexer
 lexer = lex.lex()

@@ -55,7 +55,7 @@ def p_attribute_struct_value(p):
 
 def p_attribute_struct_array_value(p):
     'attribute_value : attribute ARRAY STRUCT struct_definition '
-    p[0] = RandomStructInline(p[1], p[3], is_array=True)
+    p[0] = RandomStructInline(p[1], p[4], is_array=True)
 
 ### STRING
 def p_string_value(p):
@@ -104,7 +104,17 @@ def p_array_new_struct_value(p):
 
 # Error rule for syntax errors
 def p_error(p):
-    print("Syntax error in input!")
+    raise Exception("Syntax error in input")
+
+#############################################
+
+def parseFile():
+    if(sys.argv[1] == "--f"):
+        with open (sys.argv[2], "r") as myfile:
+            parser = yacc.yacc()
+            print(parser.parse(myfile.readlines()))
+    else:
+        raise Exception("Too many arguments")
 
 if __name__ == "__main__":
     if(len(sys.argv) > 2):
@@ -114,12 +124,4 @@ if __name__ == "__main__":
             parser = yacc.yacc()
             print(parser.parse(sys.argv[1]))
         else:
-             print("Argument expected")
-
-def parseFile():
-    if(sys.argv[1] == "--f"):
-        with open (sys.argv[2], "r") as myfile:
-            parser = yacc.yacc()
-            print(parser.parse(myfile.readlines()))
-    else:
-        print("Too many arguments")
+             raise Exception("Argument expected")
