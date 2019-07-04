@@ -4,7 +4,8 @@ import random
 import sys
 from attributes import Attributes, EmptyAttributes
 from structs import Structs
-from typesdefinition import RandomBool, RandomInt, RandomFloat, RandomString, RandomStruct, RandomStructInline
+from typesdefinition import RandomBool, RandomInt, RandomFloat, RandomString, RandomStruct, RandomStructInline, RandomArray
+from arraydefinition import Array
 from lexer import tokens
 
 ### Struct definition
@@ -51,56 +52,66 @@ def p_attribute(p):
 
 def p_attribute_struct_value(p):
     'attribute_value : attribute STRUCT struct_definition '
-    p[0] = RandomStructInline(p[1], p[3])
-
-def p_attribute_struct_array_value(p):
-    'attribute_value : attribute ARRAY STRUCT struct_definition '
-    p[0] = RandomStructInline(p[1], p[4], is_array=True)
+    p[0] = RandomStructInline(p[3], p[1])
 
 ### STRING
 def p_string_value(p):
     'attribute_value : attribute STRING'
     p[0] = RandomString(p[1])
 
-def p_array_string_value(p):
-    'attribute_value : attribute ARRAY STRING'
-    p[0] = RandomString(p[1], is_array=True)
-
 ### INT
 def p_int_value(p):
     'attribute_value : attribute INT'
     p[0] = RandomInt(p[1])
-
-def p_array_int_value(p):
-    'attribute_value : attribute ARRAY INT'
-    p[0] = RandomInt(p[1], is_array=True)
 
 ### FLOAT64
 def p_float_value(p):
     'attribute_value : attribute FLOAT64'
     p[0] = RandomFloat(p[1])
 
-def p_array_float_value(p):
-    'attribute_value : attribute ARRAY FLOAT64'
-    p[0] = RandomFloat(p[1], is_array=True)
-
 ### BOOL
 def p_bool_value(p):
     'attribute_value : attribute BOOL'
     p[0] = RandomBool(p[1])
 
-def p_array_bool_value(p):
-    'attribute_value : attribute ARRAY BOOL'
-    p[0] = RandomBool(p[1], is_array=True)
-
 ### NEW STRUCT
 def p_new_struct_value(p):
     'attribute_value : attribute type_name'
-    p[0] = RandomStruct(p[1], p[2])
+    p[0] = RandomStruct(p[2], p[1])
+
+### ARRAY
+def p_array_attribute_value(p):
+    'attribute_value : attribute array_value'
+    p[0] = RandomArray(p[2], p[1])
+
+def p_array_value_recursive(p):
+    'array_value : ARRAY array_value'
+    p[0] = Array(p[2])
+
+def p_array_string_value(p):
+    'array_value : ARRAY STRING'
+    p[0] = Array(RandomString())
+
+def p_array_int_value(p):
+    'array_value : ARRAY INT'
+    p[0] = Array(RandomInt())
+
+def p_array_float_value(p):
+    'array_value : ARRAY FLOAT64'
+    p[0] = Array(RandomFloat())
+
+def p_array_bool_value(p):
+    'array_value : ARRAY BOOL'
+    p[0] = Array(RandomBool())
 
 def p_array_new_struct_value(p):
-    'attribute_value : attribute ARRAY type_name'
-    p[0] = RandomStruct(p[1], p[3], is_array=True)
+    'array_value : ARRAY type_name'
+    p[0] = Array(RandomStruct(p[2]))
+
+def p_array_struct_inline_value(p):
+    'array_value : ARRAY STRUCT struct_definition '
+    p[0] = Array(RandomStructInline(p[3]))
+
 
 # Error rule for syntax errors
 def p_error(p):

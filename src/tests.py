@@ -87,7 +87,7 @@ run_basic_struct_empty()
 run_two_structs()
 run_two_structs_with_inline_struct()
 run_two_structs_with_array()
-#run_two_structs_with_array_of_array()
+run_two_structs_with_array_of_array()
 run_two_structs_with_array_of_inline_struct()
 run_two_structs_empty()
 
@@ -112,4 +112,5 @@ run_invalid_circular_definition_three_struct()
 run_invalid_circular_definition_four_struct()
 run_invalid_circular_definition_struct_inline()
 
-run_with_file()'''
+run_with_file()
+run_with_empty_file()'''
