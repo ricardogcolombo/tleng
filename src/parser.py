@@ -123,7 +123,8 @@ def parseFile():
     if(sys.argv[1] == "--f"):
         with open (sys.argv[2], "r") as myfile:
             parser = yacc.yacc()
-            print(parser.parse(myfile.readlines()))
+            data = myfile.read().replace('\n', '')
+            print(parser.parse(data))
     else:
         raise Exception("Too many arguments")
 
